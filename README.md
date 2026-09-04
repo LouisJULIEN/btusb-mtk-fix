@@ -97,9 +97,12 @@ Install, then reboot — a clean boot loads the patched module directly.
 
 ## Status
 
-Reported to Ubuntu as a regression against the `linux` source package
-(noble). Once `6.8.0-140` or later carries the fix, `uninstall.sh` and remove
-this workaround.
+**Not yet filed with Ubuntu.** [`LAUNCHPAD-BUG.md`](LAUNCHPAD-BUG.md) holds the
+report ready to submit against the `linux` source package (noble); this section
+will carry the bug link once it is filed.
+
+Once `6.8.0-140` or later carries the fix, run `uninstall.sh` and drop this
+workaround.
 
 ## Hardware this was reproduced on
 
