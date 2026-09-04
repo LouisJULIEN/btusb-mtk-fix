@@ -6,7 +6,36 @@ completely dead with a kernel NULL pointer dereference at boot.
 
 `6.8.0-138` is fine. `6.8.0-139` is not.
 
-## Symptom
+## Is this your problem?
+
+**You ran a routine `apt update && apt upgrade`, rebooted, and now you cannot
+turn Bluetooth on.**
+
+Typically:
+
+- Settings shows no Bluetooth adapter at all, or the toggle refuses to stay on
+- Previously paired devices — headphones, mouse, keyboard — no longer connect
+- `bluetoothctl` reports `No default controller available`
+- Nothing you do in the GUI helps, and it worked perfectly before the update
+
+Nothing is wrong with your adapter or your pairings. The kernel that came with
+that update crashes while starting the MediaTek Bluetooth chip, so the adapter
+never comes up for anything on the system to find.
+
+If your machine has a MediaTek MT7925/MT7921 (very common on recent AMD boards
+with MediaTek Wi-Fi) and you are on `6.8.0-139-generic`, this repo fixes it.
+Check with:
+
+```sh
+uname -r                       # 6.8.0-139-generic?
+lsusb | grep -i mediatek       # a MediaTek "Wireless_Device"?
+```
+
+**In a hurry?** Reboot and pick the previous kernel (`6.8.0-138-generic`) from
+GRUB's *Advanced options* — Bluetooth works again immediately. The build below
+is the fix that survives across reboots.
+
+## Symptom (technical)
 
 No Bluetooth adapter at all. `bluetoothctl list` is empty, `hciconfig -a`
 shows `BD Address: 00:00:00:00:00:00` and `DOWN INIT`, and the kernel log
