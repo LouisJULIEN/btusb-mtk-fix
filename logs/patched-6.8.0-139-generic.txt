@@ -1,0 +1,31 @@
+sept. 04 16:06:23 Bluetooth: Core ver 2.22
+sept. 04 16:06:23 NET: Registered PF_BLUETOOTH protocol family
+sept. 04 16:06:23 Bluetooth: HCI device and connection manager initialized
+sept. 04 16:06:23 Bluetooth: HCI socket layer initialized
+sept. 04 16:06:23 Bluetooth: L2CAP socket layer initialized
+sept. 04 16:06:23 Bluetooth: SCO socket layer initialized
+sept. 04 16:06:23 usbcore: registered new interface driver btusb
+sept. 04 16:06:23 Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20250523103438
+sept. 04 16:06:23 Bluetooth: hci0: Device setup in 161776 usecs
+sept. 04 16:06:23 Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+sept. 04 16:06:23 Bluetooth: hci0: AOSP extensions version v1.00
+sept. 04 16:06:23 Bluetooth: hci0: AOSP quality report is supported
+sept. 04 16:06:26 Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+sept. 04 16:06:26 Bluetooth: BNEP filters: protocol multicast
+sept. 04 16:06:26 Bluetooth: BNEP socket layer initialized
+sept. 04 16:06:26 Bluetooth: MGMT ver 1.22
+sept. 04 16:06:26 Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20250523103438
+sept. 04 16:06:26 Bluetooth: hci0: Device setup in 159295 usecs
+sept. 04 16:06:26 Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+sept. 04 16:06:27 Bluetooth: hci0: AOSP extensions version v1.00
+sept. 04 16:06:27 Bluetooth: hci0: AOSP quality report is supported
+sept. 04 16:06:30 Bluetooth: RFCOMM TTY layer initialized
+sept. 04 16:06:30 Bluetooth: RFCOMM socket layer initialized
+sept. 04 16:06:30 Bluetooth: RFCOMM ver 1.11
+sept. 04 16:08:19 Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20250523103438
+sept. 04 16:08:19 Bluetooth: hci0: Device setup in 160123 usecs
+sept. 04 16:08:19 Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+sept. 04 16:08:20 Bluetooth: hci0: AOSP extensions version v1.00
+sept. 04 16:08:20 Bluetooth: hci0: AOSP quality report is supported
+sept. 04 16:08:24 Bluetooth: hci0: ACL packet for unknown connection handle 3837
+sept. 04 16:10:25 Bluetooth: hci0: ACL packet for unknown connection handle 3837

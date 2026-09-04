@@ -1,0 +1,76 @@
+[   11.752203] usb 3-2: Found UVC 1.00 device <unnamed> (046d:0821)
+[   11.758926] MCE: In-kernel MCE decoding enabled.
+[   11.761034] usbcore: registered new interface driver btusb
+[   11.763208] mt7921e 0000:0d:00.0: enabling device (0000 -> 0002)
+[   11.770287] Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20250523103438
+[   11.770293] BUG: kernel NULL pointer dereference, address: 0000000000000219
+[   11.770296] #PF: supervisor read access in kernel mode
+[   11.770298] #PF: error_code(0x0000) - not-present page
+[   11.770300] PGD 0 P4D 0 
+[   11.770303] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[   11.770306] CPU: 6 PID: 225 Comm: kworker/u51:0 Tainted: P           OE      6.8.0-139-generic #139-Ubuntu
+[   11.770308] Hardware name: Micro-Star International Co., Ltd. MS-7E12/MAG X670E TOMAHAWK WIFI (MS-7E12), BIOS 1.80 02/06/2024
+[   11.770310] Workqueue: hci0 hci_power_on [bluetooth]
+[   11.770331] RIP: 0010:__pm_runtime_resume+0x1b/0x80
+[   11.770336] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 56 41 55 41 54 41 89 f4 83 e6 01 53 48 89 fb 75 09 <f6> 87 c9 01 00 00 04 74 4a 41 f6 c4 04 74 07 f0 ff 83 c0 01 00 00
+[   11.770338] RSP: 0018:ffffd13fc099bb30 EFLAGS: 00010246
+[   11.770340] RAX: ffff8b43777034d0 RBX: 0000000000000050 RCX: 0000000000000000
+[   11.770342] RDX: 0000000000000035 RSI: 0000000000000000 RDI: 0000000000000050
+[   11.770344] RBP: ffffd13fc099bb50 R08: 0000000000000000 R09: 0000000000000000
+[   11.770346] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000004
+[   11.770347] R13: 0000000000000035 R14: 000000000000003a R15: ffffd13fc099bbe8
+[   11.770349] FS:  0000000000000000(0000) GS:ffff8b61ddf00000(0000) knlGS:0000000000000000
+[   11.770351] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   11.770352] CR2: 0000000000000219 CR3: 000000014c9d6000 CR4: 0000000000f50ef0
+[   11.770354] PKRU: 55555554
+[   11.770355] Call Trace:
+[   11.770357]  <TASK>
+[   11.770360]  usb_autopm_get_interface+0x1d/0x60
+[   11.770366]  btmtk_usb_hci_wmt_sync+0xa9/0x2e0 [btmtk]
+[   11.770369]  ? __pfx_btmtk_usb_hci_wmt_sync+0x10/0x10 [btmtk]
+[   11.770371]  btmtk_setup_firmware_79xx+0x1c7/0x360 [btmtk]
+[   11.770375]  btusb_mtk_setup+0x453/0x610 [btusb]
+[   11.770380]  hci_dev_setup_sync+0x6c/0x430 [bluetooth]
+[   11.770399]  ? __pm_runtime_idle+0x4c/0xd0
+[   11.770402]  hci_dev_init_sync+0x3e/0x1c0 [bluetooth]
+[   11.770416]  hci_dev_open_sync+0xb1/0x350 [bluetooth]
+[   11.770431]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   11.770436]  hci_dev_do_open+0x28/0x70 [bluetooth]
+[   11.770451]  hci_power_on+0x50/0x210 [bluetooth]
+[   11.770466]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   11.770468]  ? __try_to_del_timer_sync+0x5f/0xa0
+[   11.770471]  process_one_work+0x181/0x3a0
+[   11.770476]  worker_thread+0x18b/0x330
+[   11.770478]  ? __pfx_worker_thread+0x10/0x10
+[   11.770480]  kthread+0xef/0x120
+[   11.770483]  ? __pfx_kthread+0x10/0x10
+[   11.770485]  ret_from_fork+0x44/0x70
+[   11.770488]  ? __pfx_kthread+0x10/0x10
+[   11.770490]  ret_from_fork_asm+0x1b/0x30
+[   11.770495]  </TASK>
+[   11.770496] Modules linked in: snd_usb_audio(+) snd_hda_codec(+) snd_hda_core snd_usbmidi_lib mt7921e(+) snd_ump snd_hwdep amd64_edac(-) mt7921_common btusb edac_mce_amd mt792x_lib btrtl snd_pcm mt76_connac_lib btintel btbcm uvcvideo(+) mt76 btmtk amdxcp kvm_amd snd_seq_midi videobuf2_vmalloc nvidia(POE+) drm_exec bluetooth uvc snd_seq_midi_event gpu_sched videobuf2_memops mac80211 drm_buddy kvm videobuf2_v4l2 snd_rawmidi drm_suballoc_helper drm_ttm_helper ecdh_generic videodev ttm ecc snd_seq irqbypass drm_display_helper essiv videobuf2_common snd_seq_device cec mc rapl wmi_bmof authenc snd_timer cfg80211 snd rc_core ccp i2c_piix4 i2c_algo_bit input_leds k10temp joydev libarc4 soundcore gpio_amdpt mac_hid sch_fq_codel msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs ip_tables x_tables autofs4 zfs(PO) spl(O) dm_crypt hid_generic usbhid hid crct10dif_pclmul crc32_pclmul polyval_clmulni polyval_generic ghash_clmulni_intel sha256_ssse3 nvme r8169 sha1_ssse3 ahci nvme_core xhci_pci libahci xhci_pci_renesas
+[   11.770557]  realtek nvme_auth video wmi aesni_intel crypto_simd cryptd
+[   11.770564] CR2: 0000000000000219
+[   11.770566] ---[ end trace 0000000000000000 ]---
+[   11.779114] mt7921e 0000:0d:00.0: ASIC revision: 79220010
+[   13.878363] clocksource: Long readout interval, skipping watchdog check: cs_nsec: 2131007678 wd_nsec: 2130995279
+[   13.887404] NVRM: loading NVIDIA UNIX x86_64 Kernel Module  560.35.03  Fri Aug 16 21:39:15 UTC 2024
+[   13.923355] mt7921e 0000:0d:00.0: HW/SW Version: 0x8a108a10, Build Time: 20250523103150a
+[   13.952400] mt7921e 0000:0d:00.0: WM Firmware Version: ____000000, Build Time: 20250523103234
+[   13.981040] RIP: 0010:__pm_runtime_resume+0x1b/0x80
+[   13.981046] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 56 41 55 41 54 41 89 f4 83 e6 01 53 48 89 fb 75 09 <f6> 87 c9 01 00 00 04 74 4a 41 f6 c4 04 74 07 f0 ff 83 c0 01 00 00
+[   13.981047] RSP: 0018:ffffd13fc099bb30 EFLAGS: 00010246
+[   13.981050] RAX: ffff8b43777034d0 RBX: 0000000000000050 RCX: 0000000000000000
+[   13.981051] RDX: 0000000000000035 RSI: 0000000000000000 RDI: 0000000000000050
+[   13.981053] RBP: ffffd13fc099bb50 R08: 0000000000000000 R09: 0000000000000000
+[   13.981054] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000004
+[   13.981055] R13: 0000000000000035 R14: 000000000000003a R15: ffffd13fc099bbe8
+[   13.981056] FS:  0000000000000000(0000) GS:ffff8b61ddf00000(0000) knlGS:0000000000000000
+[   13.981058] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   13.981059] CR2: 0000000000000219 CR3: 000000014c9d6000 CR4: 0000000000f50ef0
+[   13.981061] PKRU: 55555554
+[   13.981062] note: kworker/u51:0[225] exited with irqs disabled
+[   13.985515] nvidia-modeset: Loading NVIDIA Kernel Mode Setting Driver for UNIX platforms  560.35.03  Fri Aug 16 21:21:48 UTC 2024
+[   13.988081] [drm] [nvidia-drm] [GPU ID 0x00000100] Loading driver
+[   13.988445] snd_hda_intel 0000:01:00.1: enabling device (0000 -> 0002)
+[   13.988545] snd_hda_intel 0000:01:00.1: Disabling MSI
