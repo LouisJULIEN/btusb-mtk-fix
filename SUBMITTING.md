@@ -14,7 +14,10 @@ Everything you need for both steps is below.
 
 ---
 
-## Step 1 — File the bug
+## Step 1 — File the bug ✔
+
+> **Filed:** [LP #2166509](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2166509)
+> — `linux (Ubuntu)`, New, with apport's hardware data attached.
 
 Use `ubuntu-bug` rather than the Launchpad web form. It attaches `lspci`,
 `lsusb`, `dmesg`, kernel version, BIOS data and package versions automatically,
@@ -53,7 +56,7 @@ Write down the bug number. Everything below needs it.
 
 ---
 
-## Step 2 — Bug description
+## Step 2 — Bug description ✔
 
 Paste this verbatim, replacing nothing except where marked.
 
@@ -191,20 +194,19 @@ boots: https://github.com/LouisJULIEN/btusb-mtk-fix
 
 ## Step 3 — Put the bug number in the patch
 
-The patch ships with a placeholder. Replace it with your bug number:
+**Done.** The bug is [LP #2166509](https://bugs.launchpad.net/bugs/2166509) and
+the patch already carries it:
 
-```sh
-sed -i 's|/bugs/XXXXXXX|/bugs/2162xxx|' \
-  0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch
+```
+BugLink: https://bugs.launchpad.net/bugs/2166509
 ```
 
-A patch without a valid `BugLink:` will be rejected, so check it:
+A patch without a valid `BugLink:` is rejected, so if you ever regenerate the
+patch, check it again:
 
 ```sh
 head -5 0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch
 ```
-
----
 
 ## Step 4 — Mail the patch
 

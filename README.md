@@ -140,9 +140,13 @@ Install, then reboot — a clean boot loads the patched module directly.
 
 ## Status
 
-**Not yet filed with Ubuntu.** [`SUBMITTING.md`](SUBMITTING.md) holds the
-report ready to submit against the `linux` source package (noble); this section
-will carry the bug link once it is filed.
+Filed with Ubuntu as
+**[LP #2166509](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2166509)**
+against the `linux` source package (noble).
+
+The patch is queued for submission to `kernel-team@lists.ubuntu.com`, which is
+how a fix actually reaches a released Ubuntu kernel.
+[`SUBMITTING.md`](SUBMITTING.md) documents that process end to end.
 
 Once `6.8.0-140` or later carries the fix, run `uninstall.sh` and drop this
 workaround.

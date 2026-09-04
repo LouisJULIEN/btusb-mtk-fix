@@ -1,7 +1,7 @@
 From: Louis JULIEN <louis69600@laposte.net>
 Subject: [PATCH] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
 
-BugLink: https://bugs.launchpad.net/bugs/XXXXXXX
+BugLink: https://bugs.launchpad.net/bugs/2166509
 
 Commit d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to
 btmtk.c") moved the MediaTek WMT handshake out of btusb.c and into
