@@ -1,38 +1,52 @@
 From: Louis JULIEN <louis69600@laposte.net>
 Subject: [PATCH] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
 
-BugLink: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/XXXXXXX
+BugLink: https://bugs.launchpad.net/bugs/XXXXXXX
 
-The 6.8.0-139 backport of the upstream series
+Commit d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to
+btmtk.c") moved the MediaTek WMT handshake out of btusb.c and into
+btmtk.c. The moved code no longer has struct btusb_data in scope, so it
+reads the USB interface, device and control anchor out of the btmtk
+private area of hci_dev instead:
 
-  Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c
+	struct btmtk_data *data = hci_get_priv(hdev);
+	...
+	err = usb_autopm_get_interface(data->intf);
 
-moved the MediaTek WMT handshake from btusb.c into btmtk.c. The moved
-code reads the USB interface, device and control anchor from the btmtk
-private area of hci_dev (hci_get_priv), but the corresponding hunk that
-populates those fields in btusb_mtk_setup() was not carried across.
+Those fields are populated by the very next commit of the same series,
+5c5e8c52e3ca ("Bluetooth: btmtk: move btusb_mtk_[setup, shutdown] to
+btmtk.c"), which rewrites btusb_mtk_setup() to seed btmtk_data before
+delegating to btmtk_usb_setup().
 
-btusb_mtk_setup() sets only ->dev_id and ->reset_sync, leaving ->intf,
-->udev and ->ctrl_anchor NULL. btmtk_usb_hci_wmt_sync() then calls
-usb_autopm_get_interface(data->intf) with a NULL pointer during firmware
-setup, oopsing in __pm_runtime_resume:
+noble picked up d019930b0049 in 6.8.0-139.139, via LP: #2160250 ("Noble
+update: upstream stable patchset 2026-07-09"), without 5c5e8c52e3ca. The
+consumer therefore landed without its producer: btusb_mtk_setup() still
+has its pre-6.11 shape and sets only ->dev_id and ->reset_sync, leaving
+->intf, ->udev and ->ctrl_anchor NULL. btmtk_usb_hci_wmt_sync() then
+calls usb_autopm_get_interface(NULL) during firmware setup and oopses in
+__pm_runtime_resume:
 
   BUG: kernel NULL pointer dereference, address: 0000000000000219
   RIP: 0010:__pm_runtime_resume+0x1b/0x80
   Call Trace:
    usb_autopm_get_interface+0x1d/0x60
-   btmtk_usb_hci_wmt_sync+0xa9/0x2e0   [btmtk]
+   btmtk_usb_hci_wmt_sync+0xa9/0x2e0     [btmtk]
    btmtk_setup_firmware_79xx+0x1c7/0x360 [btmtk]
-   btusb_mtk_setup+0x453/0x610         [btusb]
-   hci_dev_setup_sync+0x6c/0x430       [bluetooth]
-   hci_dev_open_sync+0xb1/0x350        [bluetooth]
-   hci_power_on+0x50/0x210             [bluetooth]
+   btusb_mtk_setup+0x453/0x610           [btusb]
+   hci_dev_setup_sync+0x6c/0x430         [bluetooth]
+   hci_dev_open_sync+0xb1/0x350          [bluetooth]
+   hci_power_on+0x50/0x210               [bluetooth]
 
 The kworker exits with irqs disabled, firmware setup never completes and
 the controller is left DOWN INIT with BD_ADDR 00:00:00:00:00:00, so no
-Bluetooth adapter is usable on the machine.
+Bluetooth adapter is usable on the machine. 6.8.0-138.138 is unaffected.
 
-Restore the missing assignments, matching upstream btusb_mtk_setup().
+Backporting 5c5e8c52e3ca in full is not appropriate for noble: it moves
+btusb_mtk_setup()/btusb_mtk_shutdown() wholesale into btmtk.c and depends
+on the rest of the 6.11 MediaTek restructuring (btmtk_usb_setup(),
+btmtk_usb_shutdown(), the ISO data transmission series). Instead, seed the
+three fields the moved WMT code actually requires, which is what
+5c5e8c52e3ca does for them upstream.
 
 Reported-and-tested-by: Louis JULIEN <louis69600@laposte.net>
 Signed-off-by: Louis JULIEN <louis69600@laposte.net>

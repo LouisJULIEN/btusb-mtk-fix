@@ -60,27 +60,34 @@ Full logs for the broken, good and patched boots are in [`logs/`](logs/).
 
 ## Cause
 
-The 6.8.0-139 backport of the upstream series *"Bluetooth: btmtk: move
-`btusb_mtk_hci_wmt_sync` to btmtk.c"* moved the MediaTek WMT handshake out of
-`btusb.c` and into `btmtk.c`. The moved code reads the USB interface, device
-and control anchor out of the btmtk private area of `hci_dev`:
+A backport that took a commit without its prerequisite.
 
-```c
-usb_autopm_get_interface(data->intf);
-```
+Two consecutive upstream commits, both from the same July 2024 MediaTek
+series that landed in v6.11:
 
-but the hunk that *populates* those fields in `btusb_mtk_setup()` was not
-carried across with it. `btusb_mtk_setup()` sets only `->dev_id` and
-`->reset_sync`, so `->intf`, `->udev` and `->ctrl_anchor` stay NULL and the
-first `usb_autopm_get_interface()` dereferences NULL.
+| Commit | Role |
+|---|---|
+| [`d019930b0049`](https://git.kernel.org/linus/d019930b0049) — *move `btusb_mtk_hci_wmt_sync` to btmtk.c* | **Consumer.** Moves the WMT handshake into `btmtk.c`, where `struct btusb_data` is out of scope, so it reads `->intf`, `->udev` and `->ctrl_anchor` from `hci_get_priv(hdev)` instead. |
+| [`5c5e8c52e3ca`](https://git.kernel.org/linus/5c5e8c52e3ca) — *move `btusb_mtk_[setup, shutdown]` to btmtk.c* | **Producer.** Rewrites `btusb_mtk_setup()` to seed exactly those three fields before delegating to `btmtk_usb_setup()`. |
 
-Upstream is **not** affected — it has these assignments. This is a dropped
-hunk in the Ubuntu backport only.
+Noble picked up the consumer in 6.8.0-139.139 — via
+[LP: #2160250](https://bugs.launchpad.net/bugs/2160250), *"Noble update:
+upstream stable patchset 2026-07-09"* — but not the producer. So `btmtk.c`
+reads fields that nothing writes.
+
+`btusb_mtk_setup()` in noble still has its pre-6.11 shape and sets only
+`->dev_id` and `->reset_sync`, leaving `->intf`, `->udev` and `->ctrl_anchor`
+NULL. The first `usb_autopm_get_interface(data->intf)` then dereferences NULL.
+
+Upstream is **not** affected: v6.11 and later carry both commits, and v6.10 and
+earlier carry neither. Only a tree holding one without the other breaks, which
+is why 6.8.0-138 is fine.
 
 ## The patch
 
 [`0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch`](0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch)
-restores the three missing lines, matching upstream `btusb_mtk_setup()`:
+adds the three assignments the moved WMT code requires, which is what
+`5c5e8c52e3ca` does for them upstream:
 
 ```c
  	mediatek = hci_get_priv(hdev);
@@ -90,6 +97,13 @@ restores the three missing lines, matching upstream `btusb_mtk_setup()`:
 +	mediatek->udev = data->udev;
 +	mediatek->ctrl_anchor = &data->ctrl_anchor;
 ```
+
+
+Backporting `5c5e8c52e3ca` in full would be the wrong fix for noble — it moves
+`btusb_mtk_setup()`/`btusb_mtk_shutdown()` wholesale into `btmtk.c` and drags in
+the rest of the 6.11 restructuring (`btmtk_usb_setup()`, `btmtk_usb_shutdown()`,
+the ISO data transmission series). Three assignments satisfy the dependency
+without any of that.
 
 ## Usage
 
@@ -126,7 +140,7 @@ Install, then reboot — a clean boot loads the patched module directly.
 
 ## Status
 
-**Not yet filed with Ubuntu.** [`LAUNCHPAD-BUG.md`](LAUNCHPAD-BUG.md) holds the
+**Not yet filed with Ubuntu.** [`SUBMITTING.md`](SUBMITTING.md) holds the
 report ready to submit against the `linux` source package (noble); this section
 will carry the bug link once it is filed.
 
