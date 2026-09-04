@@ -214,11 +214,16 @@ Send to **`kernel-team@lists.ubuntu.com`**. You do not need to subscribe to
 post, but subscribing is how you see the replies:
 https://lists.ubuntu.com/mailman/listinfo/kernel-team
 
-The subject must carry the SRU tags so it is triaged correctly:
+The subject must carry the SRU tags so it is triaged correctly. It is already
+set in the patch file's own `Subject:` header, which is where `git send-email`
+reads it from:
 
 ```
-[SRU][noble][PATCH 1/1] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
+Subject: [SRU][noble][PATCH 1/1] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
 ```
+
+(`--subject-prefix` is a `git format-patch` option, not a `git send-email` one —
+editing the header is what actually works when sending an existing `.patch`.)
 
 ### Recommended: git send-email
 
@@ -247,7 +252,7 @@ Then send:
 ```sh
 git send-email \
   --to kernel-team@lists.ubuntu.com \
-  --subject-prefix "SRU][noble][PATCH" \
+  --from "Louis JULIEN <louis69600@laposte.net>" \
   0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch
 ```
 

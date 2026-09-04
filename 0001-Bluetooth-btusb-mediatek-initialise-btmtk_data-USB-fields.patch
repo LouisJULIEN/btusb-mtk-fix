@@ -1,5 +1,5 @@
 From: Louis JULIEN <louis69600@laposte.net>
-Subject: [PATCH] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
+Subject: [SRU][noble][PATCH 1/1] Bluetooth: btusb: mediatek: initialise btmtk_data USB fields
 
 BugLink: https://bugs.launchpad.net/bugs/2166509
 
