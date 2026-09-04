@@ -208,7 +208,10 @@ patch, check it again:
 head -5 0001-Bluetooth-btusb-mediatek-initialise-btmtk_data-USB-fields.patch
 ```
 
-## Step 4 — Mail the patch
+## Step 4 — Mail the patch ✔
+
+> **Sent 2026-09-04** to `kernel-team@lists.ubuntu.com`, SMTP result 250.
+> Message-id `<20260904154118.140436-1-louis69600@laposte.net>`.
 
 Send to **`kernel-team@lists.ubuntu.com`**. You do not need to subscribe to
 post, but subscribing is how you see the replies:

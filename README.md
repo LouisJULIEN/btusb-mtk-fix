@@ -144,9 +144,15 @@ Filed with Ubuntu as
 **[LP #2166509](https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2166509)**
 against the `linux` source package (noble).
 
-The patch is queued for submission to `kernel-team@lists.ubuntu.com`, which is
-how a fix actually reaches a released Ubuntu kernel.
-[`SUBMITTING.md`](SUBMITTING.md) documents that process end to end.
+The patch was sent to `kernel-team@lists.ubuntu.com` on **2026-09-04** as
+`[SRU][noble][PATCH 1/1]`, message-id
+`<20260904154118.140436-1-louis69600@laposte.net>`. It should appear in the
+[September 2026 list archive](https://lists.ubuntu.com/archives/kernel-team/2026-September/).
+
+Next: two `Acked-by:` replies, then a kernel-team member applies it to
+`noble/master-next`; the fix rides the following SRU cycle into `-proposed`
+and then `noble-updates`. [`SUBMITTING.md`](SUBMITTING.md) documents the whole
+process, including the verification step that decides whether it ships.
 
 Once `6.8.0-140` or later carries the fix, run `uninstall.sh` and drop this
 workaround.
